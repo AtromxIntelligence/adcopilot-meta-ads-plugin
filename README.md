@@ -43,7 +43,7 @@ Tag Manager and Analytics are connected inside AdCopilot at https://app.adcopilo
 
 ## Already use another AdCopilot plugin?
 
-There is one connector and one sign-in, whichever AdCopilot plugins you add. In Claude Code, `/mcp` shows the connector once, under whichever AdCopilot plugin loaded first. On Claude on the web, Cowork and the desktop app, the connector is matched by its address, so your account holds one. If Claude asks you to sign in again after you remove an AdCopilot plugin, run `/mcp` and sign in once.
+There is one connector and one AdCopilot account, whichever AdCopilot plugins you add. Every AdCopilot plugin points at the same address, so your AI client treats them as one connector. In Claude Code, `/mcp` shows the connector once, under whichever AdCopilot plugin loaded first, and the sign-in belongs to that entry. If Claude asks you to sign in again after you add or remove an AdCopilot plugin, run `/mcp` and sign in once.
 
 ## What you get
 

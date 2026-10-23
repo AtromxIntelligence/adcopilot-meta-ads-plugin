@@ -274,10 +274,14 @@ class Readme(unittest.TestCase):
         self.assertGreaterEqual(words, 600)
         self.assertLessEqual(words, 1200)
 
-    def test_it_says_one_connector_one_sign_in(self):
+    def test_it_says_one_connector_one_account_and_the_sign_in_after_an_add_or_removal(self):
         text = squash(self.text)
-        self.assertIn("one connector and one sign-in, whichever AdCopilot plugins you add", text)
-        self.assertIn("run `/mcp` and sign in once", text)
+        self.assertIn("There is one connector and one AdCopilot account, whichever "
+                      "AdCopilot plugins you add.", text)
+        self.assertIn("under whichever AdCopilot plugin loaded first, and the sign-in "
+                      "belongs to that entry.", text)
+        self.assertIn("If Claude asks you to sign in again after you add or remove an "
+                      "AdCopilot plugin, run `/mcp` and sign in once.", text)
 
     def test_it_has_the_sections_the_directory_and_a_customer_look_for(self):
         for heading in ("## Install", "## Already use another AdCopilot plugin?",
