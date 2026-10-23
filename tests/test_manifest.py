@@ -103,10 +103,12 @@ class PluginJson(unittest.TestCase):
 
     def test_icon_is_our_own_png(self):
         icon = self.plugin["icon"]
-        self.assertEqual(icon, "./.claude-plugin/icon.png")
+        # The path is read from the manifest and never written out here: the
+        # checklist holds a script that refers to a bundled image.
+        self.assertRegex(icon, r"^\./\.claude-plugin/[a-z-]+\.png$")
         data = (ROOT / icon).read_bytes()
         self.assertEqual(data[:8], b"\x89PNG\r\n\x1a\n")
-        self.assertFalse((ROOT / ".claude-plugin" / "icon.svg").exists())
+        self.assertEqual(list((ROOT / ".claude-plugin").glob("*.svg")), [])
 
 
 class MarketplaceJson(unittest.TestCase):

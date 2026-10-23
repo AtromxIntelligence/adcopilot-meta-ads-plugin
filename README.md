@@ -5,7 +5,7 @@ Meta Ads, Facebook Ads and Instagram Ads help in your AI client, through AdCopil
 What it does today:
 
 - **Checks your Meta Pixel in Google Tag Manager.** It finds the base code, its trigger and the event tags such as Lead or Purchase (`gtm_list_tags`, `gtm_list_triggers`, `gtm_list_version_headers`), and says what that proves and what it does not.
-- **Stages a missing pixel or event tag** in AdCopilot's own Tag Manager workspace (`gtm_create_tag`, `gtm_create_trigger`), after your yes. You review and publish it yourself.
+- **Stages a missing pixel or event tag** in a workspace named AdCopilot in your own Tag Manager container (`gtm_create_tag`, `gtm_create_trigger`), after your yes. You review and publish it yourself.
 - **Reports Facebook and Instagram traffic and key events in Google Analytics (GA4)** by source, medium and campaign, paid social against organic social (`ga4_run_report`, `ga4_list_conversion_events`).
 - **Finds UTM mistakes** such as split spellings, campaigns that are (not set), and paid clicks landing as referral, and writes a UTM tag set for each campaign.
 - **Guides conversion setup**, plans campaigns, drafts ad copy and creative briefs, and does the budget pacing math. These are Claude's own work from what you tell it. AdCopilot reads no Meta data for them.

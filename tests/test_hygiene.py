@@ -5,6 +5,7 @@ product. Patterns are built by joining pieces, so this file never matches
 itself. Stdlib only; reads no environment variable.
 """
 
+import json
 import os
 import re
 import subprocess
@@ -120,7 +121,8 @@ class Hygiene(unittest.TestCase):
     def test_the_icon_is_the_one_png_and_nothing_else_is_an_image(self):
         images = [n for n in files() if Path(n).suffix.lower() in
                   (".png", ".svg", ".jpg", ".jpeg", ".gif", ".webp", ".ico")]
-        self.assertEqual(images, [".claude-plugin/icon.png"])
+        icon = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text("utf-8"))["icon"]
+        self.assertEqual(images, [icon[2:] if icon.startswith("./") else icon])
 
 
 if __name__ == "__main__":

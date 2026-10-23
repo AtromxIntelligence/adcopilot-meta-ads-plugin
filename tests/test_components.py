@@ -203,7 +203,7 @@ class FirstCall(unittest.TestCase):
             self.assertIn('source: "%s"' % SOURCE, text, path)
             self.assertIn('source: "claude-scheduled"', text, path)
             # Never the bare marker, and never a version with no name: the
-            # server would read either as the main plugin.
+            # main plugin sends those, and the name tells this plugin apart.
             self.assertEqual(re.findall(r"claude-plugin(?!/)", text), [], path)
             for found in re.findall(r"claude-plugin/[^\s\"'`]*", text):
                 self.assertEqual(found, SOURCE, path)
