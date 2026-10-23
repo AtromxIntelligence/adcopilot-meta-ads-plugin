@@ -1,0 +1,106 @@
+name: checks
+
+# The structural gate: it needs no credential and starts no model. It installs
+# Claude Code from npm at a pinned version and uses one command of it, `claude
+# plugin validate`, which only reads local files. Installing from npm is not a
+# download-and-execute pattern; the grep below keeps it that way.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  structural:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The version-against-tag check reads tags, which a shallow
+          # checkout does not fetch.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Pinned, not `@latest`, so the gate's own tool cannot change under it.
+      # This release understands the listing fields of plugin.json.
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@2.1.288
+
+      # Both manifests, strictly. It reads files and needs no credential.
+      - name: claude plugin validate --strict
+        run: |
+          set -euo pipefail
+          claude plugin validate . --strict
+          claude plugin validate .claude-plugin/plugin.json --strict
+
+      # A manifest that does not parse takes the plugin, or its connector,
+      # out of the directory.
+      - name: Manifests parse
+        run: |
+          set -euo pipefail
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .mcp.json; do
+            jq -e . "$f" >/dev/null \
+              || { echo "::error file=$f::does not parse as JSON"; exit 1; }
+            echo "ok  $f"
+          done
+
+      # A skill or command with no name or description stops being
+      # discoverable, and the validator checks the manifests, not the bodies.
+      - name: Every skill and command has name + description
+        run: |
+          set -euo pipefail
+          rc=0
+          for f in skills/*/SKILL.md commands/*.md; do
+            [ -e "$f" ] || continue
+            head -n 20 "$f" | grep -q '^name:'        || { echo "::error file=$f::front matter has no name:"; rc=1; }
+            head -n 20 "$f" | grep -q '^description:' || { echo "::error file=$f::front matter has no description:"; rc=1; }
+          done
+          [ "$rc" -eq 0 ] && echo "ok  all skills and commands carry name + description"
+          exit "$rc"
+
+      # The plugin's own text and shape, checked without a model. Stdlib only.
+      - name: Structural tests
+        run: python3 -m unittest discover -s tests -v
+
+      # The directory's scanner holds a download-and-execute pattern anywhere
+      # in the repository, prose included. This file is excluded: its
+      # comments describe the pattern.
+      - name: No download-and-execute pattern
+        run: |
+          set -uo pipefail
+          hits=$(grep -rInE '(curl|wget)[^|;]*\|[[:space:]]*(sudo[[:space:]]+)?(ba)?sh' . \
+                   --exclude-dir=.git --exclude=checks.yml || true)
+          if [ -n "$hits" ]; then
+            echo "$hits"
+            echo "::error::a download-and-execute pattern is in the repository. The plugin directory's scanner holds this for review wherever it appears, including in prose. Describe the command instead of quoting it."
+            exit 1
+          fi
+          echo "ok  no piped-installer pattern"
+
+      # A manifest ahead of the latest tag is the normal pre-release state. A
+      # manifest behind one means a bump was missed.
+      - name: Manifest version is not behind the latest tag
+        run: |
+          set -euo pipefail
+          manifest=$(jq -r .version .claude-plugin/plugin.json)
+          tag=$(git tag --sort=-v:refname | head -1 || true)
+          echo "manifest $manifest | latest tag ${tag:-(none)}"
+          if [ -z "$tag" ]; then echo "ok  no tags yet"; exit 0; fi
+          bare=${tag#v}
+          lowest=$(printf '%s\n%s\n' "$manifest" "$bare" | sort -V | head -1)
+          if [ "$manifest" = "$bare" ]; then
+            echo "ok  manifest equals the latest tag"
+          elif [ "$lowest" = "$bare" ]; then
+            echo "ok  manifest is ahead of $tag — an unreleased bump"
+          else
+            echo "::error::the manifest ($manifest) is BEHIND the latest tag ($tag). Bump .claude-plugin/plugin.json before tagging."
+            exit 1
+          fi

@@ -1,0 +1,16 @@
+{
+  "name": "adcopilot-meta-ads-plugin",
+  "description": "AdCopilot for Meta Ads: Meta Pixel checks in Google Tag Manager, Facebook and Instagram traffic in Google Analytics, campaign plans and ad copy drafts. Direct Meta ad-account access is not included.",
+  "owner": {
+    "name": "Atromx Intelligence",
+    "url": "https://adcopilot.cloud"
+  },
+  "plugins": [
+    {
+      "name": "adcopilot-meta-ads",
+      "source": "./",
+      "description": "Meta Pixel checks and staged tags in Google Tag Manager, Facebook and Instagram traffic in Google Analytics, UTM checks, campaign plans, ad copy and budget pacing math. Every change is proposed first.",
+      "category": "Marketing"
+    }
+  ]
+}
