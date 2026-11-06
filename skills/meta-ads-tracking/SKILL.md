@@ -1,6 +1,6 @@
 ---
 name: meta-ads-tracking
-description: Check whether the Meta Pixel is set up in Google Tag Manager (the base code, its trigger, the Lead or Purchase event tags, and whether the container has any version), say what that does and does not prove, and stage a missing base or event tag in the AdCopilot workspace for you to review and publish. Use when someone asks whether the Meta Pixel or Facebook Pixel is installed or working, about Meta conversion tracking, the pixel in Tag Manager, a Lead or Purchase event for Facebook or Instagram ads, or why Meta shows no conversions.
+description: Check, through AdCopilot, whether the Meta Pixel is set up in Google Tag Manager (the base code, its trigger, the Lead or Purchase event tags, and whether the container has any version), say what that does and does not prove, and stage a missing base or event tag in the AdCopilot workspace for you to review and publish. Use when someone asks whether the Meta Pixel or Facebook Pixel is installed or working, about Meta conversion tracking, the Meta Pixel in Tag Manager, a Lead or Purchase event for Facebook or Instagram ads, or why Meta shows no conversions.
 ---
 
 # Meta Pixel in Tag Manager
@@ -15,7 +15,7 @@ In your first answer, once in the conversation (not again if another skill of th
 
 ## First call
 
-Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. Do this request, keep any limit `next_step` adds, and offer the rest afterwards.
+Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
 
 A product this skill needs that the answer reports as not connected is not something to work around. Say what connecting it unlocks, in the `unlocks` words the server gives for it, give its `connect_url` exactly as the server returned it (never a link from memory), and stop. A product flagged `needs_readd` is connected but cannot be reached from this connector: say what the server's `next_step` for that product says, and stop.
 
@@ -69,7 +69,7 @@ Stage nothing until the customer asks, and only the piece that is missing.
 2. Base tag: ask the customer to paste the base code exactly as Events Manager shows it for their pixel. Never type it from memory and never change it. Propose one Custom HTML tag, named plainly, with their code in its `html` parameter, firing on All Pages (`firing_trigger_id` 2147479553) in `gtm_create_tag`. An existing Custom HTML tag, as `gtm_list_tags` returns it, shows the keys that type uses.
 3. Event tag: propose one trigger and one tag together. The trigger is a Window Loaded trigger (type `windowLoaded`), made with `gtm_create_trigger`, whose `filter` is one Tag Manager condition of type `contains` with parameters `arg0` ({{Page Path}}) and `arg1` (the thank-you path they give); a filter on an existing trigger, as `gtm_list_triggers` returns it, shows the shape. The tag is a Custom HTML tag whose code is a single `track` call to `fbq` with the standard event name they chose, inside a script element, firing on that trigger. Window Loaded fires after All Pages, so the base code has run and `fbq` exists; Tag Manager does not promise the order of two tags on the same trigger unless tag priority or sequencing is set in Tag Manager, and no AdCopilot tool sets either. Tag Manager's Preview is the referee for the order.
 4. A filter on Page Path reads a built-in variable that must be on, or the trigger matches nothing and the tag never fires, silently. Read `gtm_list_built_in_variables` on the AdCopilot workspace if there is one. If Page Path is not in the list, or there is no AdCopilot workspace yet, propose `gtm_enable_built_in_variable` (type `pagePath` at the time of writing) with the trigger. It changes nothing if the variable is already on.
-5. Each proposal says what it adds, that it lands in the AdCopilot workspace and changes nothing on the live site until the customer publishes, and how to undo it: do not publish it, or delete it in Tag Manager (AdCopilot never deletes). Ask for the yes before the first call.
+5. Each proposal says what it adds, that it lands in the AdCopilot workspace and changes nothing on the live site until the customer publishes, and how to undo it: do not publish it, or delete it in Tag Manager (AdCopilot's Tag Manager tools have no delete). Ask for the yes before the first call.
 6. After the yes, make the calls, then read the tags and triggers back with `gtm_list_tags` and `gtm_list_triggers` on the AdCopilot workspace and report them by name. Say that publishing is the customer's click in Tag Manager (Submit, then Publish, at the time of writing), and that nothing counts until they have done it and Test events has shown the event.
 7. If the site asks visitors for cookie consent, the pixel's firing rules must follow it. No AdCopilot tool sets consent settings on a tag: say so, and send them to Tag Manager's consent settings and to whoever runs the site's consent tool.
 
@@ -79,7 +79,7 @@ AdCopilot cannot give Meta's own figures: spend, results, reach, or pixel health
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. Nothing is ever deleted.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
 
 ## What breaks
 

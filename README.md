@@ -35,7 +35,7 @@ The plugin already registers the connector, so there is no need for "Add custom 
 /mcp
 ```
 
-The last step opens the connector list. Choose `adcopilot` and sign in. There is no `claude mcp add` step: the plugin registers the connector for you.
+The last step opens the connector list. Choose `adcopilot` and sign in. There is nothing to add by hand: the plugin registers the connector for you. If you added AdCopilot to Claude Code by hand before, Claude Code uses that copy instead of the plugin's, and AdCopilot's docs show how to remove it: https://adcopilot.cloud/docs/connect/claude-code-plugin#already-added-the-connector-by-hand
 
 ### Connect your Google products once
 
@@ -65,7 +65,7 @@ Skills, which Claude uses when you ask in your own words:
 - Read your Meta ad account: no campaigns, ad sets, ads, spend, results, pixel events or Events Manager data. It has no access to Meta, and it gives no Meta figure from memory. Meta publishes a connector of its own for Meta ads, and AdCopilot's guide shows it beside AdCopilot: https://adcopilot.cloud/docs/guides/meta-ads-alongside-adcopilot/
 - Create or change anything in Meta.
 - Publish Tag Manager. Every tag it stages waits in the AdCopilot workspace until you publish it.
-- Delete anything.
+- Delete anything. AdCopilot's Tag Manager and Analytics tools, the ones its skills use, have no delete.
 - Change anything without your explicit yes in the conversation. Every change is proposed first, with what it changes and how to undo it.
 
 ## Data
@@ -83,7 +83,9 @@ After you sign in, ask in your own words. For example:
 
 ## Support
 
-Open an issue at https://github.com/AtromxIntelligence/adcopilot-meta-ads-plugin/issues or write to support@adcopilot.cloud.
+Open an issue at https://github.com/AtromxIntelligence/adcopilot-meta-ads-plugin/issues, write to support@adcopilot.cloud, or see https://adcopilot.cloud/contact.
+
+To report a security problem, write to support@adcopilot.cloud.
 
 ## Version
 
