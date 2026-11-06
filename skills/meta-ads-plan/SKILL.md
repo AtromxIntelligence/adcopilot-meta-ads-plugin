@@ -1,6 +1,6 @@
 ---
 name: meta-ads-plan
-description: Plan a Meta ads campaign and draft the ad copy for Facebook and Instagram ads, written by Claude itself from what the customer tells it, with the objective, the result to optimise for, audiences to test, the campaign structure, and Primary text, Headline and Description variants with creative briefs. Use when someone asks to plan, structure or write Meta ads, Facebook ads or Instagram ads, asks for ad copy, headlines or creative ideas for them, or asks what to run first.
+description: Plan a Meta ads campaign and draft the ad copy for Facebook and Instagram ads, written by Claude itself from what the customer tells it, with the objective, the result to optimise for, audiences to test, the campaign structure, and Primary text, Headline and Description variants with creative briefs. Use when someone asks to plan, structure or write Meta ads, Facebook ads or Instagram ads, asks for ad copy, headlines or creative ideas for them, or asks what to run first on Facebook or Instagram.
 ---
 
 # Meta campaign plan and ad copy
@@ -15,7 +15,7 @@ In your first answer, once in the conversation (not again if another skill of th
 
 ## First call
 
-Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.0"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. Do this request, keep any limit `next_step` adds, and offer the rest afterwards.
+Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
 
 A product this skill needs that the answer reports as not connected is not something to work around. Say what connecting it unlocks, in the `unlocks` words the server gives for it, give its `connect_url` exactly as the server returned it (never a link from memory), and stop. A product flagged `needs_readd` is connected but cannot be reached from this connector: say what the server's `next_step` for that product says, and stop.
 
@@ -46,7 +46,7 @@ Write it short and in plain words, in this order:
 For each ad, write three variants each of Primary text, Headline and Description.
 
 - Put the point in the first words of the Primary text, which is the part that shows before See more. Meta's ads guide recommends, for Facebook Feed image ads, 50-150 characters of primary text and a headline of 27 characters, and lists no description length for them (checked 23 October 2026). Other placements differ, and the ad preview in Meta's Ads Manager is the referee for length. Do not state an exact character count as fact; the preview counts.
-- Use only claims the customer gave you: their offer, their price, their words. Invent no discount, review, number, deadline or guarantee.
+- Use only claims the customer gave you: their offer, their price, their words. Invent no price cut, review, number, deadline or guarantee.
 - Meta reviews every ad against its own advertising standards, and AdCopilot cannot pre-approve one. Meta also has special ad categories, such as financial products and services (credit among them), housing, employment, and social issues, elections or politics, with their own rules: if the business is in one, say so and send the customer to Meta's help.
 
 ## What this cannot do
@@ -55,7 +55,7 @@ Name it in the answer: it creates nothing in Meta, it cannot see how an audience
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. Nothing is ever deleted.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
 
 This skill makes no change in any product. A plan is a draft: nothing in it is applied anywhere.
 

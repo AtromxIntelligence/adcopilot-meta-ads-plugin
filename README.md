@@ -14,7 +14,7 @@ Today AdCopilot works through its Google connection: it checks your Meta Pixel i
 
 Made by Atromx Intelligence (https://adcopilot.cloud). Not affiliated with or endorsed by Meta Platforms, Inc. Meta, Facebook and Instagram are trademarks of Meta Platforms, Inc. AdCopilot is not related to other products named AdCopilot.
 
-The plugin is free (MIT). The AdCopilot connector is a hosted service: Free plan available; paid plans on https://adcopilot.cloud/pricing
+The plugin is MIT licensed. The AdCopilot connector it brings is a hosted service, so you need an AdCopilot account to use it.
 
 ## Install
 
@@ -35,7 +35,7 @@ The plugin already registers the connector, so there is no need for "Add custom 
 /mcp
 ```
 
-The last step opens the connector list. Choose `adcopilot` and sign in. There is no `claude mcp add` step: the plugin registers the connector for you.
+The last step opens the connector list. Choose `adcopilot` and sign in. There is nothing to add by hand: the plugin registers the connector for you. If you added AdCopilot to Claude Code by hand before, Claude Code uses that copy instead of the plugin's, and AdCopilot's docs show how to remove it: https://adcopilot.cloud/docs/connect/claude-code-plugin#already-added-the-connector-by-hand
 
 ### Connect your Google products once
 
@@ -65,25 +65,34 @@ Skills, which Claude uses when you ask in your own words:
 - Read your Meta ad account: no campaigns, ad sets, ads, spend, results, pixel events or Events Manager data. It has no access to Meta, and it gives no Meta figure from memory. Meta publishes a connector of its own for Meta ads, and AdCopilot's guide shows it beside AdCopilot: https://adcopilot.cloud/docs/guides/meta-ads-alongside-adcopilot/
 - Create or change anything in Meta.
 - Publish Tag Manager. Every tag it stages waits in the AdCopilot workspace until you publish it.
-- Delete anything.
+- Delete anything. AdCopilot's Tag Manager and Analytics tools, the ones its skills use, have no delete.
 - Change anything without your explicit yes in the conversation. Every change is proposed first, with what it changes and how to undo it.
 
 ## Data
 
-The plugin is instructions only: it runs no code and sends nothing anywhere itself. The AdCopilot connector at mcp.adcopilot.cloud reads and, on your yes, writes your Google products through Google's APIs with your Google sign-in. When you ask it to stage a Meta Pixel tag, the code you pasted travels in that Tag Manager request through the connector. Links in the plugin to Meta's pages and to adcopilot.cloud are for you to open; the plugin fetches none of them. Privacy policy: https://adcopilot.cloud/privacy. Terms: https://adcopilot.cloud/terms.
+The plugin is instructions only: it runs no code and sends nothing anywhere itself. The AdCopilot connector at mcp.adcopilot.cloud reads and, on your yes, writes your Google products through Google's APIs with your Google sign-in. When you ask it to stage a Meta Pixel tag, the code you pasted travels in that Tag Manager request through the connector. Links in the plugin to Meta's pages (developers.facebook.com) and to adcopilot.cloud are for you to open; the plugin fetches none of them. Privacy policy: https://adcopilot.cloud/privacy. Terms: https://adcopilot.cloud/terms.
+
+## Example prompts
+
+After you sign in, ask in your own words. For example:
+
+- "Check whether my Meta Pixel is installed in Google Tag Manager, and which events it tracks."
+- "How much Facebook and Instagram traffic reached my site last month, and how many key events did it bring in Google Analytics?"
+- "Find the UTM mistakes in my Facebook and Instagram traffic, and write a UTM tag set for my next campaign."
+- "Plan a Meta campaign for my business, draft the ad copy, and check my budget pace if I give you the figures."
 
 ## Support
 
-Open an issue at https://github.com/AtromxIntelligence/adcopilot-meta-ads-plugin/issues or write to support@adcopilot.cloud.
+Open an issue at https://github.com/AtromxIntelligence/adcopilot-meta-ads-plugin/issues, write to support@adcopilot.cloud, or see https://adcopilot.cloud/contact.
+
+To report a security problem, write to support@adcopilot.cloud.
 
 ## Version
+
+**0.1.1 (2026-11-05)** Changes nothing you use. The plugin folder now holds only the files Claude loads.
 
 **0.1.0 (2026-10-23, written against AdCopilot v2.44.0, live since 2026-10-22)** First release. Meta Pixel check and staged tags in Google Tag Manager, Facebook and Instagram traffic and key events in Google Analytics, UTM checks, conversion setup guidance, campaign plans, ad copy drafts and budget pacing math. Reading the Meta ad account is not included and has no date.
 
 ## Licence
 
 MIT, see the LICENSE file. Copyright (c) 2026 Atromx Intelligence Private Limited.
-
-## What CI runs
-
-Every push to main and every pull request runs the structural tests (manifests, the connector file, front matter, tool names, size limits and hygiene rules, in stdlib Python), `claude plugin validate` in strict mode on a pinned Claude Code release, and gitleaks over every commit. None of it reads a credential or runs a model.

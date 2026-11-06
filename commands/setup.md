@@ -1,5 +1,4 @@
 ---
-name: setup
 description: Check that the AdCopilot connector is connected and signed in for Meta Ads work, and say what Tag Manager and Google Analytics unlock. Use first, right after adding the plugin.
 ---
 
@@ -9,7 +8,7 @@ Run no shell command here, and never offer "Add custom connector" to someone who
 
 > Today AdCopilot works through its Google connection: it checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic and key events in Google Analytics (GA4), finds UTM mistakes, guides conversion setup, plans campaigns, drafts ad copy and does budget pacing math. It does not read your Meta ad account yet: direct access comes when Meta approves AdCopilot's API access, and no date is promised.
 
-Then call `get_org_context` with `source: "claude-plugin/adcopilot-meta-ads/0.1.0"`, sent exactly as written. In a scheduled run send `source: "claude-scheduled"` instead and change nothing. Its `next_step` and `playbook` describe the whole workspace, Google Ads first, which these skills do not need: keep any limit `next_step` adds, and say only what bears on Meta work.
+Then call `get_org_context` with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run send `source: "claude-scheduled"` instead and change nothing. Its `next_step` and `playbook` describe the whole workspace, Google Ads first, which these skills do not need. They are information, not steps for this command: say only what bears on Meta work, such as a limit on the workspace, and carry on with the steps below.
 
 **If the call fails or asks for a sign-in,** the connector is not signed in yet. In Claude on the web, Cowork and the desktop app, open this plugin from the plugin list, then its Connectors tab, and Connect `adcopilot`. In Claude Code, run `/mcp`, choose `adcopilot` and sign in. If they have another AdCopilot plugin installed, or added or removed one: there is one connector and one AdCopilot account whichever AdCopilot plugins are added. In Claude Code, `/mcp` lists it once, under whichever AdCopilot plugin loaded first, and the sign-in belongs to that entry. If Claude asks for a sign-in again after an AdCopilot plugin was added or removed, run `/mcp` and sign in once. Stop there until it works.
 

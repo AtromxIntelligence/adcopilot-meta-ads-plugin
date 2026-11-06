@@ -1,5 +1,4 @@
 ---
-name: plan
 description: Plan a Meta ads campaign and draft Facebook and Instagram ad copy, and check the budget pace if figures are given. Say what to advertise, or leave it blank and Claude asks.
 ---
 

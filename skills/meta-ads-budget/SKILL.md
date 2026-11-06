@@ -1,6 +1,6 @@
 ---
 name: meta-ads-budget
-description: Do the budget pacing math for Meta ads from the figures the customer gives (budget, spend so far, days gone and days left, daily or lifetime budget) and say the projected month-end spend, the daily amount that lands on budget, and whether spend is over or under pace. Use when someone asks whether their Facebook or Instagram ad budget is on pace, how much to spend per day, whether they will overspend, or what a Meta budget projects to by month end.
+description: Do the budget pacing math for Meta ads from the figures the customer gives (budget, spend so far, days gone and days left, daily or lifetime budget) and say the projected month-end spend, the daily amount that lands on budget, and whether spend is over or under pace. Use when someone asks whether their Facebook or Instagram ad budget is on pace, how much to spend per day on Meta ads, whether their Meta ads will overspend, or what a Meta budget projects to by month end.
 ---
 
 # Meta budget pacing
@@ -46,7 +46,7 @@ It reads no Meta account, so it cannot check a figure the customer gave, and it 
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. Nothing is ever deleted.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
 
 This skill makes no change in any product. If the customer wants a budget changed, they change it in Ads Manager.
 

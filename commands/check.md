@@ -1,5 +1,4 @@
 ---
-name: check
 description: Check your Meta Pixel in Tag Manager and your Facebook and Instagram traffic in Google Analytics, then say what to fix first. Add pixel or traffic to check just one, or a period such as the last 7 days.
 ---
 
