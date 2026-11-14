@@ -1,21 +1,21 @@
 ---
 name: meta-ads-traffic
-description: Report, through AdCopilot, Facebook and Instagram traffic and key events the way Google Analytics (GA4) counts them, paid social against organic social, and find UTM mistakes such as split spellings, (not set) campaigns and paid clicks landing as referral. Use when someone asks how much traffic or how many conversions Facebook or Instagram ads bring, about UTM tags for Meta ads, why Meta ad clicks show as referral or direct in Analytics, or how to tag Meta ad links.
+description: Report, through AdCopilot, Facebook and Instagram traffic and key events the way Google Analytics (GA4) counts them, paid social against organic social, and find UTM mistakes such as split spellings, (not set) campaigns and paid clicks landing as referral. Use when someone asks how much traffic or how many conversions Facebook or Instagram ads bring, about UTM tags for Meta ads, why Meta ad clicks show as referral or direct in Analytics, or how to tag Meta ad links. Meta's own figures are the meta-ads-reports skill's, reported apart.
 ---
 
 # Facebook and Instagram traffic in GA4
 
-You are reading Google Analytics (GA4) through the AdCopilot connector and reporting what it counts from Facebook and Instagram. AdCopilot reads no Meta data for this: Meta's own clicks, spend, reach and results are not here, and Analytics and Meta each count a result their own way, so the two sets of numbers will not match. The numbers you give are Analytics' numbers, and you say so.
+You are reading Google Analytics (GA4) through the AdCopilot connector and reporting what it counts from Facebook and Instagram. This skill reads no Meta data. Meta's own clicks, spend, reach and results come from the Meta connector, through the `meta-ads-reports` skill, as a separate report, and Analytics and Meta each count a result their own way: never set the two side by side, add them or reconcile them. The numbers you give are Analytics' numbers, and you say so.
 
 ## Say this first, once
 
 In your first answer, once in the conversation (not again if another skill of this plugin already said it), say this in these words:
 
-> Today AdCopilot works through its Google connection: it checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic and key events in Google Analytics (GA4), finds UTM mistakes, guides conversion setup, plans campaigns, drafts ad copy and does budget pacing math. It does not read your Meta ad account yet: direct access comes when Meta approves AdCopilot's API access, and no date is promised.
+> AdCopilot for Meta Ads reads and audits the Meta ad accounts you switch on in AdCopilot and, after your yes to each proposal, builds and changes campaigns, ad sets, ads, audiences, custom conversions and automated rules there. Campaigns, ad sets and ads it builds start paused, and you switch them on in Meta Ads Manager; an automated rule starts off. It never deletes or archives a campaign, ad set, ad, audience or rule: pausing is how something stops. Through AdCopilot's Google connection it also checks your Meta Pixel in Google Tag Manager and reports Facebook and Instagram traffic in Google Analytics (GA4), always apart from Meta's own figures. Campaign plans, ad copy and budget math are Claude's own work from what you tell it.
 
 ## First call
 
-Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
+Call `get_org_context` before any other tool of the AdCopilot connector (`adcopilot`), with `source: "claude-plugin/adcopilot-meta-ads/0.2.0"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
 
 A product this skill needs that the answer reports as not connected is not something to work around. Say what connecting it unlocks, in the `unlocks` words the server gives for it, give its `connect_url` exactly as the server returned it (never a link from memory), and stop. A product flagged `needs_readd` is connected but cannot be reached from this connector: say what the server's `next_step` for that product says, and stop.
 
@@ -38,27 +38,27 @@ Name each by the rows it shows, in a sentence, never as a table:
 
 - **Split spellings.** Analytics reports Facebook and facebook as different values, and so paid_social and paid-social. Name the spellings and the sessions on each.
 - **A campaign that is (not set).** Meta traffic with no campaign name: the link was tagged without `utm_campaign`, or not tagged at all.
-- **Paid clicks that look organic or referral.** When the customer says they run Meta ads and the Meta rows show Organic Social or Referral, untagged paid clicks are the likely cause. It is a likely cause, not a proof. The check is the link clicks in the customer's Ads Manager for the same dates: if they are far above the Meta sessions here, clicks are being lost or arriving under other channels. They read that number from Meta; you do not.
+- **Paid clicks that look organic or referral.** When the customer says they run Meta ads and the Meta rows show Organic Social or Referral, untagged paid clicks are the likely cause. It is a likely cause, not a proof, and the fix is the same either way: one tag set on every Meta ad link, below. Do not fetch Meta's own click figures to set against these sessions: Meta's figures are reported on their own.
 - **What cannot be assigned.** Visits that arrive as direct with no source cannot be traced to Facebook or Instagram, and you do not guess a share.
 
 ## Write the UTM tags
 
-Writing the tags is Claude's own work and reads nothing in Meta. For each campaign the customer names, write one tag set with one spelling, all lowercase: `utm_source` facebook (or instagram, if they want the two split), `utm_medium` paid_social, `utm_campaign` one short name that matches the campaign, and `utm_content` for the ad if they want it. The customer pastes them into the ad's URL parameters field in Meta's Ads Manager (in the Tracking section of the ad, at the time of writing).
+Writing the tags is Claude's own work and reads nothing in Meta. For each campaign the customer names, write one tag set with one spelling, all lowercase: `utm_source` facebook (or instagram, if they want the two split), `utm_medium` paid_social, `utm_campaign` one short name that matches the campaign, and `utm_content` for the ad if they want it. The customer pastes them into the ad's URL parameters field in Meta's Ads Manager (in the Tracking section of the ad, at the time of writing), or the `meta-ads-creative` skill puts them on a new creative it proposes, in its `url_tags`, on the customer's yes.
 
 Meta can fill in campaign, ad set and ad names or IDs for you through its own placeholders in that field. Use them only after the customer has confirmed the exact placeholders on Meta's help page, Add URL Parameters to Your Meta Ads on the Meta Business Help Center. Never type them from memory.
 
 ## What this cannot see
 
-Name it in the answer: Meta's own clicks, spend, reach and results; visitors who decline or block tracking, and clicks that never reached the site, which are in Meta's numbers and not in Analytics; and anything before the property was counting.
+Name it in the answer: Meta's own clicks, spend, reach and results (the `meta-ads-reports` skill gives those on their own); visitors who decline or block tracking, and clicks that never reached the site, which are in Meta's numbers and not in Analytics; and anything before the property was counting.
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. AdCopilot's Tag Manager and Analytics tools have no delete. In Meta, every change starts as a proposal from the Meta connector and is made only on the customer's yes; AdCopilot never deletes or archives a campaign, ad set, ad, audience or rule there.
 
-This skill makes no change in any product. If a UTM mistake is on a link, the fix is the customer's edit in Ads Manager.
+This skill makes no change in any product. If a UTM mistake is on a link, the fix is the customer's edit in Ads Manager, or a new creative proposed by the `meta-ads-creative` skill.
 
 ## What is next
 
 Answer what they asked first, whole. Then offer at most one next step, in a sentence, and only if it follows from what you found: the `meta-ads-tracking` skill, if the key events look wrong or missing, or a campaign plan for the traffic they want.
 
-For Meta's own numbers, AdCopilot's guide shows Meta's connector beside AdCopilot: https://adcopilot.cloud/docs/guides/meta-ads-alongside-adcopilot/. Give that link when they ask for a Meta figure, and never answer one from memory.
+For Meta's own numbers, the `meta-ads-reports` skill reads them through the Meta connector, as a separate report, never beside these. Never answer a Meta figure from memory.
