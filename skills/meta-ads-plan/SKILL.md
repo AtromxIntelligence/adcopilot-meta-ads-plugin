@@ -5,17 +5,17 @@ description: Plan a Meta ads campaign and draft the ad copy for Facebook and Ins
 
 # Meta campaign plan and ad copy
 
-You are writing a plan and ad copy drafts, as Claude's own work, from what the customer tells you. AdCopilot reads no Meta data for this: nothing is read from, or written to, a Meta ad account, and nothing here is published anywhere. The customer builds the campaign in Meta's Ads Manager, or through Meta's own tools.
+You are writing a plan and ad copy drafts, as Claude's own work, from what the customer tells you. No Meta data is read for the plan, nothing is written to a Meta ad account, and nothing here is published anywhere. A plan is a draft. When the customer wants it built in their Meta ad account, the `meta-ads-build` skill proposes each piece and makes it only on their yes, always paused; or they build it in Meta Ads Manager themselves.
 
 ## Say this first, once
 
 In your first answer, once in the conversation (not again if another skill of this plugin already said it), say this in these words:
 
-> Today AdCopilot works through its Google connection: it checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic and key events in Google Analytics (GA4), finds UTM mistakes, guides conversion setup, plans campaigns, drafts ad copy and does budget pacing math. It does not read your Meta ad account yet: direct access comes when Meta approves AdCopilot's API access, and no date is promised.
+> AdCopilot for Meta Ads reads and audits the Meta ad accounts you switch on in AdCopilot and, after your yes to each proposal, builds and changes campaigns, ad sets, ads, audiences, custom conversions and automated rules there. Campaigns, ad sets and ads it builds start paused, and you switch them on in Meta Ads Manager; an automated rule starts off. It never deletes or archives a campaign, ad set, ad, audience or rule: pausing is how something stops. Through AdCopilot's Google connection it also checks your Meta Pixel in Google Tag Manager and reports Facebook and Instagram traffic in Google Analytics (GA4), always apart from Meta's own figures. Campaign plans, ad copy and budget math are Claude's own work from what you tell it.
 
 ## First call
 
-Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
+Call `get_org_context` before any other tool of the AdCopilot connector (`adcopilot`), with `source: "claude-plugin/adcopilot-meta-ads/0.2.0"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
 
 A product this skill needs that the answer reports as not connected is not something to work around. Say what connecting it unlocks, in the `unlocks` words the server gives for it, give its `connect_url` exactly as the server returned it (never a link from memory), and stop. A product flagged `needs_readd` is connected but cannot be reached from this connector: say what the server's `next_step` for that product says, and stop.
 
@@ -51,14 +51,14 @@ For each ad, write three variants each of Primary text, Headline and Description
 
 ## What this cannot do
 
-Name it in the answer: it creates nothing in Meta, it cannot see how an audience or an ad performs, and it cannot tell the customer what Meta will approve or spend. For Meta's own numbers, AdCopilot's guide shows Meta's connector beside AdCopilot: https://adcopilot.cloud/docs/guides/meta-ads-alongside-adcopilot/. Give that link when they ask for a Meta figure, and never answer one from memory.
+Name it in the answer: it creates nothing in Meta, it cannot see how an audience or an ad performs, and it cannot tell the customer what Meta will approve or spend. For how the account's ads did, the `meta-ads-reports` skill reads Meta's own figures through the Meta connector, as a separate report. Never answer a Meta figure from memory.
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. AdCopilot's Tag Manager and Analytics tools have no delete. In Meta, every change starts as a proposal from the Meta connector and is made only on the customer's yes; AdCopilot never deletes or archives a campaign, ad set, ad, audience or rule there.
 
 This skill makes no change in any product. A plan is a draft: nothing in it is applied anywhere.
 
 ## What is next
 
-Answer what they asked first, whole. Then offer at most one next step, in a sentence: the `meta-ads-budget` skill, to check the monthly budget against the pace of spend, or the `meta-ads-tracking` skill, if the result has not been checked.
+Answer what they asked first, whole. Then offer at most one next step, in a sentence: the `meta-ads-build` skill, to build the plan in their Meta ad account as proposals, the `meta-ads-budget` skill, to check the monthly budget against the pace of spend, or the `meta-ads-pixel` skill, if nobody has checked that Meta receives the result.

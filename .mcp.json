@@ -1,1 +1,1 @@
-{"mcpServers":{"adcopilot":{"type":"http","url":"https://mcp.adcopilot.cloud/mcp"}}}
+{"mcpServers":{"adcopilot":{"type":"http","url":"https://mcp.adcopilot.cloud/mcp"},"ma":{"type":"http","url":"https://mcp.adcopilot.cloud/meta/mcp"}}}

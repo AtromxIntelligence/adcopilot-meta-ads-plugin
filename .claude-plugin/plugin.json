@@ -1,7 +1,7 @@
 {
   "name": "adcopilot-meta-ads",
-  "version": "0.1.1",
-  "description": "Meta Ads, Facebook Ads and Instagram Ads help in your AI client, through AdCopilot. Today it checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic and conversions in Google Analytics (GA4) by source, medium and campaign, finds UTM mistakes, guides conversion setup, plans campaigns, drafts ad copy and does the budget pacing math. Direct access to your Meta ad account comes when Meta approves AdCopilot's API access; there is no date yet. Every change is proposed first and made only on your yes. Made by Atromx Intelligence, not by Meta.",
+  "version": "0.2.0",
+  "description": "Meta Ads, Facebook Ads and Instagram Ads in your AI client, through AdCopilot. It reads and audits the Meta ad accounts you switch on in AdCopilot (campaigns, ad sets, ads, creatives, audiences, automated rules, results and pixel health), finds wasted spend and reports results, and, after your yes to each proposal, builds and changes campaigns, ad sets, ads, audiences, custom conversions and automated rules. Campaigns, ad sets and ads it builds start paused for you to switch on in Meta Ads Manager, and it never deletes or archives a campaign, ad set, ad, audience or rule. It also checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic in Google Analytics (GA4), plans campaigns, drafts ad copy and does budget pacing math. Made by Atromx Intelligence, not by Meta.",
   "author": {
     "name": "Atromx Intelligence",
     "url": "https://adcopilot.cloud"
@@ -20,13 +20,13 @@
     "meta-pixel",
     "facebook-pixel",
     "paid-social",
+    "ads-audit",
+    "ad-creative",
+    "custom-audiences",
     "conversions",
     "utm",
-    "google-analytics",
     "ga4",
     "google-tag-manager",
-    "ad-copy",
-    "campaign-planning",
     "budget-pacing",
     "adcopilot"
   ],

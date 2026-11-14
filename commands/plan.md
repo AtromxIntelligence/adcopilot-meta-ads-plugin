@@ -6,4 +6,6 @@ Follow the `meta-ads-plan` skill. `$ARGUMENTS` is what the customer wants to adv
 
 If `$ARGUMENTS` or the conversation holds budget figures (a budget and spend so far), follow the `meta-ads-budget` skill for the pace after the plan.
 
+When the customer wants the plan built in their Meta ad account, the `meta-ads-build` skill proposes each piece, and nothing is made until they say yes to it.
+
 Say the skills' opening paragraph once.

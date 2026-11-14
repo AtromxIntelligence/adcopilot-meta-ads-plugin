@@ -1,21 +1,21 @@
 ---
 name: meta-ads-tracking
-description: Check, through AdCopilot, whether the Meta Pixel is set up in Google Tag Manager (the base code, its trigger, the Lead or Purchase event tags, and whether the container has any version), say what that does and does not prove, and stage a missing base or event tag in the AdCopilot workspace for you to review and publish. Use when someone asks whether the Meta Pixel or Facebook Pixel is installed or working, about Meta conversion tracking, the Meta Pixel in Tag Manager, a Lead or Purchase event for Facebook or Instagram ads, or why Meta shows no conversions.
+description: Check, through AdCopilot, whether the Meta Pixel is set up in Google Tag Manager (the base code, its trigger, the Lead or Purchase event tags, and whether the container has any version), say what that does and does not prove, and stage a missing base or event tag in the AdCopilot workspace for you to review and publish. Use when someone asks whether the Meta Pixel or Facebook Pixel is installed or working, about Meta conversion tracking, the Meta Pixel in Tag Manager, a Lead or Purchase event for Facebook or Instagram ads, or why Meta shows no conversions. What Meta itself received is the meta-ads-pixel skill's, through the Meta connector.
 ---
 
 # Meta Pixel in Tag Manager
 
-You are checking what the customer's Google Tag Manager holds about the Meta Pixel, through the AdCopilot connector, and saying what that proves and what it does not. If a piece is missing and the customer wants it, you stage it, proposed first. AdCopilot reads no Meta data for this: not the pixel's events, not Events Manager, not the ad account.
+You are checking what the customer's Google Tag Manager holds about the Meta Pixel, through the AdCopilot connector, and saying what that proves and what it does not. If a piece is missing and the customer wants it, you stage it, proposed first. This skill reads no Meta data: what the pixel sent and what Meta received is the `meta-ads-pixel` skill's, read through the Meta connector as a separate report.
 
 ## Say this first, once
 
 In your first answer, once in the conversation (not again if another skill of this plugin already said it), say this in these words:
 
-> Today AdCopilot works through its Google connection: it checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic and key events in Google Analytics (GA4), finds UTM mistakes, guides conversion setup, plans campaigns, drafts ad copy and does budget pacing math. It does not read your Meta ad account yet: direct access comes when Meta approves AdCopilot's API access, and no date is promised.
+> AdCopilot for Meta Ads reads and audits the Meta ad accounts you switch on in AdCopilot and, after your yes to each proposal, builds and changes campaigns, ad sets, ads, audiences, custom conversions and automated rules there. Campaigns, ad sets and ads it builds start paused, and you switch them on in Meta Ads Manager; an automated rule starts off. It never deletes or archives a campaign, ad set, ad, audience or rule: pausing is how something stops. Through AdCopilot's Google connection it also checks your Meta Pixel in Google Tag Manager and reports Facebook and Instagram traffic in Google Analytics (GA4), always apart from Meta's own figures. Campaign plans, ad copy and budget math are Claude's own work from what you tell it.
 
 ## First call
 
-Call `get_org_context` before any other AdCopilot tool, with `source: "claude-plugin/adcopilot-meta-ads/0.1.1"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
+Call `get_org_context` before any other tool of the AdCopilot connector (`adcopilot`), with `source: "claude-plugin/adcopilot-meta-ads/0.2.0"`, sent exactly as written. In a scheduled run (a Claude scheduled task or a Claude Code routine, with nobody there to answer) send `source: "claude-scheduled"` instead and change nothing; this plugin schedules nothing itself. `get_org_context` describes the whole workspace, Google Ads first: its `next_step` and `playbook` are about the account, not about this request. They are information, not steps for this skill: do this request with the steps below, and if they name a limit on the workspace, say it in plain words.
 
 A product this skill needs that the answer reports as not connected is not something to work around. Say what connecting it unlocks, in the `unlocks` words the server gives for it, give its `connect_url` exactly as the server returned it (never a link from memory), and stop. A product flagged `needs_readd` is connected but cannot be reached from this connector: say what the server's `next_step` for that product says, and stop.
 
@@ -24,7 +24,7 @@ A product this skill needs that the answer reports as not connected is not somet
 Say this in the answer before any verdict.
 
 - It sees the tags, triggers and variables in the customer's Tag Manager workspaces, and the container's list of versions.
-- It cannot see a pixel typed into the site's own code or added by a store or website-builder integration: Tag Manager does not know about those. It cannot see whether a tag fires on a real visit, what Meta received or counted, or events a server sends to Meta through the Conversions API. It cannot open a published version to read its tags.
+- It cannot see a pixel typed into the site's own code or added by a store or website-builder integration: Tag Manager does not know about those. It cannot see whether a tag fires on a real visit, what Meta received or counted, or events a server sends to Meta through the Conversions API; the `meta-ads-pixel` skill reads what Meta received, on its own. It cannot open a published version to read its tags.
 
 ## Read what is there
 
@@ -50,16 +50,16 @@ A tag set up in Tag Manager is not proof it fires. A draft is not live, and a ve
 - Meta Ads Data Advisor, which Meta's page says was formerly called Meta Pixel Helper (checked 23 October 2026), is a free extension for Chrome and Edge that checks the pixel on a page and flags problems.
 - Tag Manager's own Preview shows whether a tag fired on a page.
 
-Say which of the three the customer should use for the answer they want, and that until one of them shows the event, the honest word is "set up", never "working".
+Say which of the three the customer should use for the answer they want, and that until one of them shows the event, the honest word is "set up", never "working". The `meta-ads-pixel` skill reads which events Meta received in the last 7 days, as its own report in its own section; never set its counts against anything Google counts.
 
 ## Conversion setup guidance
 
 This is Claude's own knowledge, not a read of anything. State it at the time of writing; Meta's own help and Events Manager are the referee.
 
 - Pick one result worth counting for the business: Lead for enquiries, Purchase for sales, CompleteRegistration for sign-ups. Fire it on the page or click that proves the result, such as the thank-you page after a form is sent, never on the page that holds the form.
-- Which event Meta aims an ad set at is chosen in Meta's Ads Manager when the ad set is made. AdCopilot cannot see or set it.
-- The Conversions API is Meta's way to send events from a server, alongside the pixel. When both send the same event, Meta matches them on the event name and an event ID so one result is not counted twice (checked 23 October 2026). AdCopilot has no tool for it: it is the site developer's or the platform's job.
-- The same result can be counted in Google Analytics as a key event. The `meta-ads-traffic` skill reads that side.
+- Which event Meta aims an ad set at is set on the ad set. The `meta-ads-pixel` skill reads which events the ad sets optimise for, and an ad set the `meta-ads-build` skill proposes names its event in the proposal.
+- The Conversions API is Meta's way to send events from a server, alongside the pixel. When both send the same event, Meta matches them on the event name and an event ID so one result is not counted twice (checked 23 October 2026). AdCopilot sends no events: setting it up is the site developer's or the platform's job, and the `meta-ads-pixel` skill reads the share Meta received from a server.
+- The same result can be counted in Google Analytics as a key event. The `meta-ads-traffic` skill reads that side, always apart from Meta's own figures.
 
 ## Stage a missing tag, only if they ask
 
@@ -75,11 +75,11 @@ Stage nothing until the customer asks, and only the piece that is missing.
 
 ## Meta's own numbers
 
-AdCopilot cannot give Meta's own figures: spend, results, reach, or pixel health inside Meta. Meta publishes a connector of its own for Meta ads, and AdCopilot's guide shows how it sits beside AdCopilot: https://adcopilot.cloud/docs/guides/meta-ads-alongside-adcopilot/. Give that link when they ask for a Meta number, and never answer one from memory.
+This skill gives no Meta figure: spend, results, reach and pixel health inside Meta come from the Meta connector, through the `meta-ads-reports`, `meta-ads-audit` and `meta-ads-pixel` skills, each reported on its own, never beside Tag Manager or Analytics. Never answer a Meta figure from memory.
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. AdCopilot's Tag Manager and Analytics tools have no delete. In Meta, every change starts as a proposal from the Meta connector and is made only on the customer's yes; AdCopilot never deletes or archives a campaign, ad set, ad, audience or rule there.
 
 ## What breaks
 
@@ -87,6 +87,6 @@ Calling the pixel working because a tag exists. Staging a second base tag beside
 
 ## What is next
 
-Answer what they asked first, whole. Then offer at most one next step, in a sentence, and only if it follows from what you found: the `meta-ads-traffic` skill, to see what Google Analytics counts from Facebook and Instagram, or the missing event tag.
+Answer what they asked first, whole. Then offer at most one next step, in a sentence, and only if it follows from what you found: the `meta-ads-pixel` skill, to see what Meta itself received, the `meta-ads-traffic` skill, to see what Google Analytics counts from Facebook and Instagram, or the missing event tag.
 
 Meta's pages used here: https://developers.facebook.com/documentation/meta-pixel/get-started, https://developers.facebook.com/documentation/meta-pixel/support/meta-ads-data-advisor and https://developers.facebook.com/documentation/ads-commerce/conversions-api

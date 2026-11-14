@@ -11,9 +11,9 @@ You are doing arithmetic on figures the customer gives you, as Claude's own work
 
 In your first answer, once in the conversation (not again if another skill of this plugin already said it), say this in these words:
 
-> Today AdCopilot works through its Google connection: it checks your Meta Pixel in Google Tag Manager, reports Facebook and Instagram traffic and key events in Google Analytics (GA4), finds UTM mistakes, guides conversion setup, plans campaigns, drafts ad copy and does budget pacing math. It does not read your Meta ad account yet: direct access comes when Meta approves AdCopilot's API access, and no date is promised.
+> AdCopilot for Meta Ads reads and audits the Meta ad accounts you switch on in AdCopilot and, after your yes to each proposal, builds and changes campaigns, ad sets, ads, audiences, custom conversions and automated rules there. Campaigns, ad sets and ads it builds start paused, and you switch them on in Meta Ads Manager; an automated rule starts off. It never deletes or archives a campaign, ad set, ad, audience or rule: pausing is how something stops. Through AdCopilot's Google connection it also checks your Meta Pixel in Google Tag Manager and reports Facebook and Instagram traffic in Google Analytics (GA4), always apart from Meta's own figures. Campaign plans, ad copy and budget math are Claude's own work from what you tell it.
 
-AdCopilot has a budget-pacing read for Google Ads accounts. It reads Google Ads, not Meta: never use it, or any Google figure, for Meta spend.
+AdCopilot also has a budget-pacing read for Google Ads accounts. It reads Google Ads, not Meta: never use it, or any Google figure, for Meta spend. For the Meta account's own figures, the `meta-ads-audit` skill reads this month's pacing through the Meta connector (`meta_budget_pacing`), as a separate report; this skill works only on the figures the customer gives.
 
 ## What to ask
 
@@ -42,14 +42,14 @@ Give the verdict first in one sentence: on pace, over, or under, by how much, an
 
 ## What this cannot do
 
-It reads no Meta account, so it cannot check a figure the customer gave, and it changes no budget: the customer changes it in Meta's Ads Manager.
+It reads no Meta account, so it cannot check a figure the customer gave, and it changes no budget. A budget change in Meta is proposed by the `meta-ads-build` skill and made only on the customer's yes, or made by the customer in Meta Ads Manager.
 
 ## Approval
 
-Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. This plugin deletes nothing: AdCopilot's Tag Manager and Analytics tools have no delete.
+Every change is proposed first, with what it changes and how to undo it, and is made only after the customer's explicit yes in this conversation, to the change exactly as stated. A yes given earlier is asked for again. Tag Manager changes are staged in the AdCopilot workspace and never published: publishing is the customer's own click in Tag Manager. AdCopilot's Tag Manager and Analytics tools have no delete. In Meta, every change starts as a proposal from the Meta connector and is made only on the customer's yes; AdCopilot never deletes or archives a campaign, ad set, ad, audience or rule there.
 
-This skill makes no change in any product. If the customer wants a budget changed, they change it in Ads Manager.
+This skill makes no change in any product. A budget change is the `meta-ads-build` skill's, on the customer's yes.
 
 ## What is next
 
-Answer what they asked first, whole. Then offer at most one next step, in a sentence: a campaign plan for the budget, with the `meta-ads-plan` skill, or the `meta-ads-tracking` skill, if nobody has checked that the result is counted.
+Answer what they asked first, whole. Then offer at most one next step, in a sentence: a campaign plan for the budget, with the `meta-ads-plan` skill, or the `meta-ads-pixel` skill, if nobody has checked that Meta receives the result.
