@@ -68,7 +68,7 @@ Both connectors are at mcp.adcopilot.cloud.
 The Meta connector (https://mcp.adcopilot.cloud/meta/mcp) reads and, on your yes, changes the Meta ad accounts you switch on, through Meta's Marketing API with the Facebook login you connect in AdCopilot.
 The Google connector (https://mcp.adcopilot.cloud/mcp) reads and, on your yes, writes your Google products through Google's APIs with your Google sign-in.
 A customer list you give passes through your AI conversation to AdCopilot, which hashes every value but your own customer IDs at once and never stores or logs the list.
-An image you ask it to upload is fetched by AdCopilot from the link you give, and a video by Meta.
+AdCopilot fetches an image you ask it to upload from the link you give, and Meta fetches a video from its link.
 A Meta Pixel tag you paste travels in that Tag Manager request through the Google connector.
 Links in the plugin to Meta's pages (developers.facebook.com) and to adcopilot.cloud are for you to open; the plugin fetches none of them.
 Privacy policy: https://adcopilot.cloud/privacy.
