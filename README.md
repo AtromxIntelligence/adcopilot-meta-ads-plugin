@@ -7,7 +7,7 @@ What it does:
 - **Reads and audits your Meta ad accounts.** Campaigns, ad sets, ads, creatives, audiences, automated rules, results and pixel health, with a score out of 100 and what to fix first. The score and its checks are AdCopilot's; Meta's rankings and recommendations are Meta's.
 - **Finds wasted spend and reports results.** Spend with no result by ad set, ad, placement, age and hour; results by level, breakdown and period; two periods compared; what changed in the account and who changed it.
 - **Builds and changes, after your yes to each proposal.** Campaigns, ad sets and ads (always created paused, for you to switch on in Meta Ads Manager), creatives from images and videos you link, copies, budgets, bids, targeting, placements and schedules, audiences and customer lists, custom conversions, automated rules (created off), A/B tests, Meta's own recommendations and the account's spending limit. A pause or a resume is said first and made on your yes too.
-- **Checks your Meta Pixel** in Meta (events received, match quality, the Conversions API share) and in Google Tag Manager, where it can stage a missing tag for you to publish.
+- **Checks your Meta Pixel** in Meta (events received, match quality, the Conversions API share) and in Google Tag Manager, where it can stage a missing tag, or the order's event ID on a WooCommerce store's Purchase tag, for you to publish.
 - **Reports Facebook and Instagram traffic and key events in Google Analytics (GA4)**, finds UTM mistakes and writes UTM tags.
 - **Plans campaigns, drafts ad copy and does the budget pacing math.** That is Claude's own work, from what you tell it.
 

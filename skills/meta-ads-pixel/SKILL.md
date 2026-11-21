@@ -1,6 +1,6 @@
 ---
 name: meta-ads-pixel
-description: "Check the Meta Pixel and conversion tracking inside Meta, through AdCopilot's Meta connector: each pixel's last event and the events it received in 7 days, Meta's event match quality, the share sent from a server through the Conversions API, deduplication, the events the ad sets optimise for and whether they can be trusted, the custom conversions and which are flagged, and, proposed first and made only on the customer's yes, a new custom conversion. Use when the user asks whether their Meta Pixel or Facebook Pixel works in Meta, whether Meta receives their purchases, leads or sign-ups, about event match quality, the Conversions API or duplicate events, why Meta shows no conversions, or to make a custom conversion for a thank-you page."
+description: "Check the Meta Pixel and conversion tracking inside Meta, through AdCopilot's Meta connector: each pixel's last event and the events it received in 7 days, Meta's event match quality, the share sent from a server through the Conversions API, deduplication, the events the ad sets optimise for and whether they can be trusted, the custom conversions and which are flagged, and, proposed first and made only on the customer's yes, a new custom conversion. Use when the user asks whether their Meta Pixel or Facebook Pixel works in Meta, whether Meta receives their purchases, leads or sign-ups, whether the sales their store or CRM sends to Meta arrive and are counted once, about event match quality, the Conversions API or duplicate events, why Meta shows no conversions, or to make a custom conversion for a thank-you page."
 ---
 
 # The Meta Pixel and conversions in Meta
@@ -23,11 +23,11 @@ Then the account: `meta_list_ad_accounts`, unless this conversation already hold
 
 ## What this can see, and what it cannot
 
-Say this before any verdict. It sees what Meta received and how Meta judges it: each pixel's events, their match quality, the share from a server, and the events the ad sets optimise for. It cannot see the website's code, whether a visit that did not reach Meta happened, or why a browser sent nothing. It sends no events and changes no Events Manager setting.
+Say this before any verdict. It sees what Meta received and how Meta judges it: each pixel's events, their match quality, the share from a server, and the events the ad sets optimise for. It cannot see the website's code, whether a visit that did not reach Meta happened, or why a browser sent nothing. This skill sends no events and changes no Events Manager setting.
 
 ## Read it
 
-1. **The quick look:** `meta_pixel_health`, each pixel (Meta calls it a dataset): when it last fired, which events it received in the last 7 days, and Meta's event match quality where Meta gives it.
+1. **The quick look:** `meta_pixel_health`, each pixel (Meta calls it a dataset): when it last fired, which events it received in the last 7 days, and Meta's event match quality where Meta gives it. A pixel can also carry AdCopilot's own status for it, read as "Sales to Meta on a pixel" says.
 2. **Can the tracking be trusted:** `meta_conversion_setup_audit`. For each event the ad sets optimise for: what the pixel received in 7 days, the share sent from a server through the Conversions API, event match quality and deduplication; then the custom conversions, which are flagged and which ad sets use them, and the tracking checks, each with its fix.
 3. **Which pixels the account can use**, when the customer is building: `meta_account_setup` lists them.
 
@@ -37,7 +37,20 @@ Say this before any verdict. It sees what Meta received and how Meta judges it: 
 - An ad set optimising for an event the pixel did not receive in 7 days cannot learn: say it first, by ad set name.
 - Event match quality is Meta's own score of how well an event's customer details match people on Meta: give it as Meta's.
 - Events sent from both the browser and a server must share an event ID, or Meta can count one result twice: name what the audit found.
-- A fix on the website (the pixel code, the Conversions API, an event ID) is the site developer's or the platform's job, in Events Manager or the site; say so, naming the setting the way Meta's screen names it.
+- A fix on the website (the pixel code, the Conversions API, an event ID) is the site developer's or the platform's job, in Events Manager or the site; say so, naming the setting the way Meta's screen names it. An event ID on a Purchase tag in Google Tag Manager is the one such fix the `meta-ads-tracking` skill can stage, proposed first.
+
+## Sales to Meta on a pixel
+
+A pixel in `meta_pixel_health`'s answer can carry `sales_to_meta`: this workspace sends its store's orders or its CRM's won deals to that pixel from AdCopilot's server, which AdCopilot calls Sales to Meta. When no pixel carries it, say nothing about Sales to Meta: never offer it, describe it or say it is coming.
+
+When a pixel carries it, give it in that pixel's report, in a few lines of its own:
+
+- `status_line`, exactly as sent: what sends, from which store or CRM, and its state.
+- `today`, when present: the sales sent, the ones Meta accepted and the ones not sent on its `date`, as AdCopilot's own counts, and each of its `not_sent_reasons` as sent.
+- `counted_once`, when present: its `share` is the part of this pixel's browser purchases that Meta paired with a server copy by event ID, as Meta's figure, read at its `read_at`. It is not a share of all sales.
+- `manage_url`, exactly as sent, never a link from memory: Sales to Meta is set up, resumed, paused and stopped there, on the Meta Ads page in AdCopilot, by the workspace owner. This skill sets nothing up and changes nothing in it.
+
+When `status_line` or `counted_once` says the website's purchases are not counted once, the usual cause is the browser copy: a Purchase with no event ID, with a different one, or sent by a store plugin or theme with its own. Say that as the next step, apart from Meta's figures: the `meta-ads-tracking` skill checks the event ID of the Purchase tag in Google Tag Manager and can stage one that carries the order's ID, proposed first; a store plugin's or theme's own browser Purchase is switched off in that plugin or theme, so that one browser Purchase fires.
 
 ## A custom conversion, on the customer's yes
 
@@ -64,7 +77,7 @@ A custom conversion starts as a proposal from `meta_propose_change`: show it, an
 
 ## What breaks
 
-Calling the tracking fine because the pixel fired once. A match-quality score given as AdCopilot's. A custom conversion promised to count past results. A website fix presented as something AdCopilot can make. Meta's counts set beside Tag Manager's or Analytics'.
+Calling the tracking fine because the pixel fired once. A match-quality score given as AdCopilot's. A custom conversion promised to count past results. A website fix presented as something AdCopilot can make. Meta's counts set beside Tag Manager's or Analytics'. Sales to Meta offered or described where no pixel carries it. AdCopilot's own Sales to Meta counts given as Meta's, or Meta's counted-once share given as a share of all sales.
 
 ## What is next
 
