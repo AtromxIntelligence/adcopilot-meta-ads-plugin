@@ -83,7 +83,7 @@ Every change is proposed first, with what it changes and how to undo it, and is 
 
 ## What breaks
 
-Calling the pixel working because a tag exists. Staging a second base tag beside an install the customer did not mention. Typing the base code from memory. Firing the event on the form page, not the thank-you page. Saying a staged tag is live. Reading an ID from memory instead of from the tags. Making a WooCommerce Purchase tag's event ID from anything but the number in the store's own order-received address. A second browser Purchase beside a store plugin's or theme's own. Saying Meta counted a sale once because the tag carries an event ID. Naming Sales to Meta to a customer who has not named it and whose pixels do not show it.
+Calling the pixel working because a tag exists. Staging a second base tag beside an install the customer did not mention. Typing the base code from memory. Firing the event on the form page, not the thank-you page. Saying a staged tag is live. Reading an ID from memory instead of from the tags. Making a WooCommerce Purchase tag's event ID from anything but the number in the store's own order-received address. A second browser Purchase beside a store plugin's or theme's own. Saying Meta counted a sale once because the tag carries an event ID. Naming Sales to Meta to a customer who has not named it.
 
 ## What is next
 
@@ -95,7 +95,7 @@ Meta's pages used here: https://developers.facebook.com/documentation/meta-pixel
 
 When Meta receives a purchase twice, once from the browser pixel and once from a server through the Conversions API, its recommended way to count it once is that both copies carry the same event ID and the same event name and reach Meta within 48 hours of each other. The browser's event ID is the fourth argument of the `track` call to `fbq` (checked 21 November 2026).
 
-Name Sales to Meta only when the customer named it, or the `meta-ads-pixel` skill showed it on one of their pixels in this conversation; otherwise say "a server". For each Purchase tag, say which of these it is, by tag name:
+Name Sales to Meta only when the customer named it; otherwise say "a server". For each Purchase tag, say which of these it is, by tag name:
 
 - **No event ID.** That is fine while nothing else sends these purchases to Meta. If a server also sends them, such as a store plugin's server events, the store platform's own Conversions API connection or Sales to Meta, Meta cannot pair the two copies, and each sale can count twice.
 - **`wc_` followed by the order's ID, read from the WooCommerce order-received address when the tag fires** (for the order with ID 1042, `wc_1042`). A server copy that carries the same ID is paired with it. Sales to Meta sends exactly that ID with each WooCommerce order.
