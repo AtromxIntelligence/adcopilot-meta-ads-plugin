@@ -23,7 +23,7 @@ Then the account: `meta_list_ad_accounts`, unless this conversation already hold
 
 ## What this can see, and what it cannot
 
-Say this before any verdict. It sees what Meta received and how Meta judges it: each pixel's events, their match quality, the share from a server, and the events the ad sets optimise for. It cannot see the website's code, whether a visit that did not reach Meta happened, or why a browser sent nothing. It sends no events and changes no Events Manager setting.
+Say this before any verdict. It sees what Meta received and how Meta judges it: each pixel's events, their match quality, the share from a server, and the events the ad sets optimise for. It cannot see the website's code, whether a visit that did not reach Meta happened, or why a browser sent nothing. This skill sends no events and changes no Events Manager setting.
 
 ## Read it
 
@@ -37,7 +37,7 @@ Say this before any verdict. It sees what Meta received and how Meta judges it: 
 - An ad set optimising for an event the pixel did not receive in 7 days cannot learn: say it first, by ad set name.
 - Event match quality is Meta's own score of how well an event's customer details match people on Meta: give it as Meta's.
 - Events sent from both the browser and a server must share an event ID, or Meta can count one result twice: name what the audit found.
-- A fix on the website (the pixel code, the Conversions API, an event ID) is the site developer's or the platform's job, in Events Manager or the site; say so, naming the setting the way Meta's screen names it.
+- A fix on the website (the pixel code, the Conversions API, an event ID) is the site developer's or the platform's job, in Events Manager or the site; say so, naming the setting the way Meta's screen names it. An event ID on a Purchase tag in Google Tag Manager is the one such fix the `meta-ads-tracking` skill can stage, proposed first.
 
 ## A custom conversion, on the customer's yes
 
